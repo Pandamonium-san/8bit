@@ -25,6 +25,7 @@ public class PlayerCharacter : MonoBehaviour
   private Animator m_Anim;            // Reference to the player's animator component.
   private Rigidbody2D m_Rigidbody2D;
   public bool m_FacingRight = true;  // For determining which way the player is currently facing.
+  public bool m_UpsideDown = false;  // For determining which way the player is currently facing.
   private float Health = 100f;
 
   public enum StateOfEmotion
@@ -34,6 +35,7 @@ public class PlayerCharacter : MonoBehaviour
     Angry
   }
 
+  [SerializeField]
   private StateOfEmotion emotionalState;
 
   private void Awake()
@@ -53,20 +55,26 @@ public class PlayerCharacter : MonoBehaviour
   {
     m_Grounded = false;
 
-    // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-    // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-    Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-    for (int i = 0; i < colliders.Length; i++)
+    if (!m_UpsideDown)
     {
-      if (colliders[i].gameObject != gameObject)
-        m_Grounded = true;
+      // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+      // This can be done using layers instead but Sample Assets will not overwrite your project settings.
+      Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+      for (int i = 0; i < colliders.Length; i++)
+      {
+        if (colliders[i].gameObject != gameObject)
+          m_Grounded = true;
+      }
     }
-    // Do the same for ceilings
-    colliders = Physics2D.OverlapCircleAll(m_CeilingCheck.position, k_GroundedRadius, m_WhatIsGround);
-    for (int i = 0; i < colliders.Length; i++)
+    else
     {
-      if (colliders[i].gameObject != gameObject)
-        m_Grounded = true;
+      // Do the same for ceilings
+      Collider2D[] colliders = Physics2D.OverlapCircleAll(m_CeilingCheck.position, k_GroundedRadius, m_WhatIsGround);
+      for (int i = 0; i < colliders.Length; i++)
+      {
+        if (colliders[i].gameObject != gameObject)
+          m_Grounded = true;
+      }
     }
     m_Anim.SetBool("Ground", m_Grounded);
 

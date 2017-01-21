@@ -27,6 +27,8 @@ public class Rock : MonoBehaviour, IInteractable
         rigidbody.velocity = new Vector3(10, rigidbody.velocity.y, 0);
       else
         rigidbody.velocity = new Vector3(-10, rigidbody.velocity.y, 0);
+      Debug.Log("push");
     }
+      Debug.Log("failpush");
   }
 }
