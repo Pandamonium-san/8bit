@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ColorCorrectionCurves = UnityStandardAssets.ImageEffects.ColorCorrectionCurves;
 
 namespace UnityStandardAssets._2D
 {
@@ -144,6 +145,29 @@ namespace UnityStandardAssets._2D
         default:
           break;
       }
+    }
+
+    private void UpdateColorOnCamera()
+    {
+        ColorCorrectionCurves ColorCorect = Camera.main.GetComponent<ColorCorrectionCurves>();
+
+        switch (emotionalState)
+        {
+            case StateOfEmotion.Happy:
+                // be happy
+                ColorCorect.blueChannel = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
+                break;
+            case StateOfEmotion.Scared:
+                // be scared
+                ColorCorect.blueChannel = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 0.25f));
+                break;
+            case StateOfEmotion.Angry:
+                // ponch ur fokin f8ce m8
+                ColorCorect.blueChannel = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 0.75f));
+                break;
+            default:
+                break;
+        }
     }
 
     public void Move(float move, bool jump)
