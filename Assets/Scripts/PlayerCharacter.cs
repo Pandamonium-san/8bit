@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerCharacter : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class PlayerCharacter : MonoBehaviour
   private Rigidbody2D m_Rigidbody2D;
   public bool m_FacingRight = true;  // For determining which way the player is currently facing.
   public bool m_UpsideDown = false;  // For determining which way the player is currently facing.
-  private float Health = 100f;
+  public float Health = 100f;
 
   public enum StateOfEmotion
   {
@@ -43,6 +44,8 @@ public class PlayerCharacter : MonoBehaviour
 
   private void Awake()
   {
+    if (!musicPlayer)
+      musicPlayer = FindObjectOfType<MusicPlayer>();
     // Setting up references.
     m_GroundCheck = transform.Find("GroundCheck");
     m_CeilingCheck = transform.Find("CeilingCheck");
@@ -116,11 +119,19 @@ public class PlayerCharacter : MonoBehaviour
     Health -= damage;
     if (Health <= 0)
     {
-      m_Anim.SetBool("Dead", true);
-      m_Rigidbody2D.simulated = false;
-      // die
-      Debug.Log("oh no u dead");
+      StartCoroutine(Die());
     }
+  }
+
+  IEnumerator Die()
+  {
+    m_Anim.SetBool("Dead", true);
+    m_Rigidbody2D.simulated = false;
+
+    yield return new WaitForSeconds(3.0f);
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+    yield return null;
   }
 
   public void SetEmotionalState(StateOfEmotion emotion)

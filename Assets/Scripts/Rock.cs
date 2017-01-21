@@ -6,7 +6,6 @@ using UnityEngine;
 public class Rock : MonoBehaviour, IInteractable
 {
   new private Rigidbody2D rigidbody;
-
   // Use this for initialization
   void Start()
   {
@@ -28,7 +27,8 @@ public class Rock : MonoBehaviour, IInteractable
       else
         rigidbody.velocity = new Vector3(-10, rigidbody.velocity.y, 0);
       Debug.Log("push");
+      GetComponent<AudioSource>().Play();
     }
-      Debug.Log("failpush");
+    Debug.Log("failpush");
   }
 }
