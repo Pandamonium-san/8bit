@@ -34,19 +34,19 @@ public class MusicPlayer : MonoBehaviour
     switch (emotionType)
     {
       case PlayerCharacter.StateOfEmotion.Happy:
-        StartCoroutine(Fade(asHappy, 0.15f, 5));
+        StartCoroutine(Fade(asHappy, 0.5f, 5));
         StartCoroutine(Fade(asScared, 0, 5));
         StartCoroutine(Fade(asAngry, 0, 5));
         break;
       case PlayerCharacter.StateOfEmotion.Scared:
         StartCoroutine(Fade(asHappy, 0, 5));
-        StartCoroutine(Fade(asScared, 0.15f, 5));
+        StartCoroutine(Fade(asScared, 0.5f, 5));
         StartCoroutine(Fade(asAngry, 0, 5));
         break;
       case PlayerCharacter.StateOfEmotion.Angry:
         StartCoroutine(Fade(asHappy, 0, 5));
         StartCoroutine(Fade(asScared, 0, 5));
-        StartCoroutine(Fade(asAngry, 0.10f, 5));
+        StartCoroutine(Fade(asAngry, 0.2f, 5));
         break;
       default:
         break;

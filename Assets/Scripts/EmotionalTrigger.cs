@@ -5,7 +5,8 @@ using UnityStandardAssets._2D;
 
 public class EmotionalTrigger : MonoBehaviour
 {
-
+  [SerializeField]
+  bool pickup;
   public PlayerCharacter.StateOfEmotion emotionType;
 
   // Use this for initialization
@@ -25,6 +26,8 @@ public class EmotionalTrigger : MonoBehaviour
     PlayerCharacter pc = other.GetComponent<PlayerCharacter>();
     if (pc != null)
     {
+      if (pickup)
+        pc.m_Anim.SetBool("Pickup", true);
       pc.SetEmotionalState(emotionType);
     }
     Debug.Log("bump", other);
