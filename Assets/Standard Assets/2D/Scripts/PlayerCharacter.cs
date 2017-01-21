@@ -29,6 +29,7 @@ namespace UnityStandardAssets._2D
     private Animator m_Anim;            // Reference to the player's animator component.
     private Rigidbody2D m_Rigidbody2D;
     private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+    private bool m_UpsideDown = false;
     private float Health = 100f;
 
     public enum StateOfEmotion
@@ -57,20 +58,26 @@ namespace UnityStandardAssets._2D
     {
       m_Grounded = false;
 
-      // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-      // This can be done using layers instead but Sample Assets will not overwrite your project settings.
-      Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
-      for (int i = 0; i < colliders.Length; i++)
+      if (!m_UpsideDown)
       {
-        if (colliders[i].gameObject != gameObject)
-          m_Grounded = true;
+        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+        // This can be done using layers instead but Sample Assets will not overwrite your project settings.
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+          if (colliders[i].gameObject != gameObject)
+            m_Grounded = true;
+        }
       }
-      // Do the same for ceilings
-      colliders = Physics2D.OverlapCircleAll(m_CeilingCheck.position, k_GroundedRadius, m_WhatIsGround);
-      for (int i = 0; i < colliders.Length; i++)
+      else
       {
-        if (colliders[i].gameObject != gameObject)
-          m_Grounded = true;
+        // Do the same for ceilings
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_CeilingCheck.position, k_GroundedRadius, m_WhatIsGround);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+          if (colliders[i].gameObject != gameObject)
+            m_Grounded = true;
+        }
       }
       m_Anim.SetBool("Ground", m_Grounded);
 
@@ -82,11 +89,13 @@ namespace UnityStandardAssets._2D
       {
         transform.localScale = new Vector3(transform.localScale.x, -1);
         m_Rigidbody2D.gravityScale = -1f;
+        m_UpsideDown = true;
       }
       else
       {
         transform.localScale = new Vector3(transform.localScale.x, 1);
         m_Rigidbody2D.gravityScale = 1f;
+        m_UpsideDown = false;
       }
 
       switch (emotionalState)
