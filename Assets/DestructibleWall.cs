@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DestructibleWall : MonoBehaviour
 {
-
   // Use this for initialization
   void Start()
   {
@@ -28,7 +27,9 @@ public class DestructibleWall : MonoBehaviour
         Debug.Log("ro dah");
       }
       Debug.Log("fos");
-      GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip, 1);
+      AudioSource audioSource = collision.gameObject.GetComponent<AudioSource>();
+      audioSource.PlayOneShot((AudioClip)Resources.Load("audio/sfx/boulder1"), 0.7f);
+      audioSource.PlayOneShot((AudioClip)Resources.Load("audio/sfx/boulder2"), 0.7f);
     }
   }
 }
