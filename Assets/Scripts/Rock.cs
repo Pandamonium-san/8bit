@@ -26,9 +26,7 @@ public class Rock : MonoBehaviour, IInteractable
         rigidbody.velocity = new Vector3(10, rigidbody.velocity.y, 0);
       else
         rigidbody.velocity = new Vector3(-10, rigidbody.velocity.y, 0);
-      Debug.Log("push");
-      GetComponent<AudioSource>().Play();
+      pc.m_AudioSource.PlayOneShot((AudioClip)Resources.Load("audio/sfx/boulderHitGround1"), 1.0f);
     }
-    Debug.Log("failpush");
   }
 }

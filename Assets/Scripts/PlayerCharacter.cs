@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class PlayerCharacter : MonoBehaviour
 {
   [SerializeField]
-  public MusicPlayer musicPlayer;
+  public MusicPlayer m_MusicPlayer;
   public Animator m_Anim;            // Reference to the player's animator component.
+  public AudioSource m_AudioSource;
+  private Camera m_Camera;
 
   [SerializeField]
   private float m_DefaultMaxSpeed = 5f;
@@ -44,13 +46,15 @@ public class PlayerCharacter : MonoBehaviour
 
   private void Awake()
   {
-    if (!musicPlayer)
-      musicPlayer = FindObjectOfType<MusicPlayer>();
+    m_Camera = FindObjectOfType<Camera>();
+    if (!m_MusicPlayer)
+      m_MusicPlayer = FindObjectOfType<MusicPlayer>();
     // Setting up references.
     m_GroundCheck = transform.Find("GroundCheck");
     m_CeilingCheck = transform.Find("CeilingCheck");
     m_Anim = GetComponent<Animator>();
     m_Rigidbody2D = GetComponent<Rigidbody2D>();
+    m_AudioSource = GetComponent<AudioSource>();
 
     m_JumpForce = m_DefaultJumpForce;
     m_MaxSpeed = m_DefaultMaxSpeed;
@@ -104,10 +108,10 @@ public class PlayerCharacter : MonoBehaviour
       case StateOfEmotion.Happy:
         break;
       case StateOfEmotion.Scared:
-        TakeDamage(0.1f);
+        TakeDamage(0.01f);
         break;
       case StateOfEmotion.Angry:
-        TakeDamage(0.1f);
+        TakeDamage(0.03f);
         break;
       default:
         break;
@@ -139,26 +143,41 @@ public class PlayerCharacter : MonoBehaviour
     emotionalState = emotion;
     m_JumpForce = m_DefaultJumpForce;
     m_MaxSpeed = m_DefaultMaxSpeed;
+    StartCoroutine(Zoom(8));
     m_Anim.SetInteger("Emotion", (int)emotionalState);
     m_Anim.SetBool("EmotionChanged", true);
 
-    musicPlayer.ChangeAudio(emotion);
+    m_MusicPlayer.ChangeAudio(emotion);
 
     switch (emotion)
     {
       case StateOfEmotion.Happy:
+        Health = 100f;
         // be happy
         break;
       case StateOfEmotion.Scared:
         // be scared
         m_JumpForce = m_DefaultJumpForce * 1.2f;
         m_MaxSpeed = m_DefaultMaxSpeed * 1.5f;
+        StartCoroutine(Zoom(12));
         break;
       case StateOfEmotion.Angry:
+        StartCoroutine(Zoom(6));
         // ponch ur fokin f8ce m8
         break;
       default:
         break;
+    }
+  }
+
+  IEnumerator Zoom(float orthographicSize)
+  {
+    float diff =  orthographicSize - m_Camera.orthographicSize;
+    float step = diff / 60;
+    for (int i = 0; i < 60; i++)
+    {
+      m_Camera.orthographicSize += step;
+      yield return null;
     }
   }
 
@@ -199,6 +218,7 @@ public class PlayerCharacter : MonoBehaviour
       m_Grounded = false;
       m_Anim.SetBool("Ground", false);
       m_Rigidbody2D.AddForce(new Vector2(0f, m_Rigidbody2D.gravityScale * m_JumpForce));
+      m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/jump1"));
     }
   }
 
@@ -209,9 +229,9 @@ public class PlayerCharacter : MonoBehaviour
       var bitMask = ~1;
       Vector2 direction = m_FacingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
       RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 2, bitMask);
-      if(!hit)
+      if (!hit)
         hit = Physics2D.Raycast(m_GroundCheck.position, direction, 2, bitMask);
-      if(!hit)
+      if (!hit)
         hit = Physics2D.Raycast(m_CeilingCheck.position, direction, 2, bitMask);
 
       Debug.DrawLine(transform.position, transform.position + new Vector3(direction.x * 2, 0, 0), Color.blue, 1);
