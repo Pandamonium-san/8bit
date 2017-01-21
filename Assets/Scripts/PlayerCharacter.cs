@@ -22,7 +22,7 @@ public class PlayerCharacter : MonoBehaviour
   private bool m_Grounded;            // Whether or not the player is grounded.
   private Transform m_CeilingCheck;   // A position marking where to check for ceilings
   const float k_CeilingRadius = .01f; // Radius of the overlap circle to determine if the player can stand up
-  private Animator m_Anim;            // Reference to the player's animator component.
+  public Animator m_Anim;            // Reference to the player's animator component.
   private Rigidbody2D m_Rigidbody2D;
   public bool m_FacingRight = true;  // For determining which way the player is currently facing.
   public bool m_UpsideDown = false;  // For determining which way the player is currently facing.
@@ -113,6 +113,8 @@ public class PlayerCharacter : MonoBehaviour
     Health -= damage;
     if (Health <= 0)
     {
+      m_Anim.SetBool("Dead", true);
+      m_Rigidbody2D.simulated = false;
       // die
       Debug.Log("oh no u dead");
     }
@@ -191,7 +193,15 @@ public class PlayerCharacter : MonoBehaviour
       var bitMask = ~1;
       Vector2 direction = m_FacingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
       RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, 2, bitMask);
+      if(!hit)
+        hit = Physics2D.Raycast(m_GroundCheck.position, direction, 2, bitMask);
+      if(!hit)
+        hit = Physics2D.Raycast(m_CeilingCheck.position, direction, 2, bitMask);
+
       Debug.DrawLine(transform.position, transform.position + new Vector3(direction.x * 2, 0, 0), Color.blue, 1);
+      Debug.DrawLine(m_CeilingCheck.position, m_CeilingCheck.position + new Vector3(direction.x * 2, 0, 0), Color.blue, 1);
+      Debug.DrawLine(m_GroundCheck.position, m_GroundCheck.position + new Vector3(direction.x * 2, 0, 0), Color.blue, 1);
+
       if (hit.collider != null)
       {
         IInteractable interactable = hit.collider.gameObject.GetComponent<IInteractable>();
