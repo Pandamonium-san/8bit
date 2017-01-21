@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets._2D
-{
+
   [RequireComponent(typeof(PlayerCharacter))]
   public class PlayerController : MonoBehaviour
   {
@@ -40,4 +39,3 @@ namespace UnityStandardAssets._2D
       m_Interact = false;
     }
   }
-}
