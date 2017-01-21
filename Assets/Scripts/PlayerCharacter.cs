@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
@@ -115,6 +116,8 @@ public class PlayerCharacter : MonoBehaviour
     m_JumpForce = m_DefaultJumpForce;
     m_MaxSpeed = m_DefaultMaxSpeed;
     m_Anim.SetInteger("Emotion", (int)emotionalState);
+    m_Anim.SetBool("EmotionChanged", true);
+
     switch (emotion)
     {
       case StateOfEmotion.Happy:
