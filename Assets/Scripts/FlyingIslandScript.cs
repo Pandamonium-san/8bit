@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class FlyingIslandScript : MonoBehaviour {
 
-    public GameObject island;
+    
     float time;
+    Animator anim;
 	// Use this for initialization
 	void Start () {
-        island = GameObject.Find("FlyingIsland");
+       
         time = 5.0f;
+        anim = this.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         time -= Time.deltaTime;
-        if (time < 0)
+        if (time < 0 && !anim.GetBool("fly"))
         {
-            island.transform.Translate(Vector2.up * 0.01f, Space.World);
+            anim.SetBool("fly", true);
         }
-        Vector2 highLimit = new Vector2(-0.234040f, 300f);
-        if (time < -5)
+        if (time < -1)
         {
-            island.transform.Translate(Vector2.up * 0.0f, Space.World);
+            this.transform.Translate(Vector2.up * 0.01f, Space.World);
+
         }
 	}
 }
