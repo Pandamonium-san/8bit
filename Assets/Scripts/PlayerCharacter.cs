@@ -58,6 +58,7 @@ public class PlayerCharacter : MonoBehaviour
 
     m_JumpForce = m_DefaultJumpForce;
     m_MaxSpeed = m_DefaultMaxSpeed;
+
   }
 
 
@@ -140,10 +141,11 @@ public class PlayerCharacter : MonoBehaviour
 
   public void SetEmotionalState(StateOfEmotion emotion)
   {
+    if (emotionalState == emotion)
+      return;
     emotionalState = emotion;
     m_JumpForce = m_DefaultJumpForce;
     m_MaxSpeed = m_DefaultMaxSpeed;
-    StartCoroutine(Zoom(8));
     m_Anim.SetInteger("Emotion", (int)emotionalState);
     m_Anim.SetBool("EmotionChanged", true);
 
@@ -154,15 +156,16 @@ public class PlayerCharacter : MonoBehaviour
       case StateOfEmotion.Happy:
         Health = 100f;
         // be happy
+        StartCoroutine(Zoom(10));
         break;
       case StateOfEmotion.Scared:
         // be scared
-        m_JumpForce = m_DefaultJumpForce * 1.2f;
-        m_MaxSpeed = m_DefaultMaxSpeed * 1.5f;
-        StartCoroutine(Zoom(12));
+        m_JumpForce = 1120; //m_DefaultJumpForce * 1.2f;
+        m_MaxSpeed = 10; // m_DefaultMaxSpeed * 1.5f;
+        StartCoroutine(Zoom(15));
         break;
       case StateOfEmotion.Angry:
-        StartCoroutine(Zoom(6));
+        StartCoroutine(Zoom(7));
         // ponch ur fokin f8ce m8
         break;
       default:
