@@ -17,9 +17,12 @@ public class FlyingIslandScript : MonoBehaviour {
         time -= Time.deltaTime;
         if (time < 0)
         {
-            island.transform.Translate(Vector2.up * Time.deltaTime, Space.World);
+            island.transform.Translate(Vector2.up * 0.01f, Space.World);
+        }
+        Vector2 highLimit = new Vector2(-0.234040f, 300f);
+        if (time < -5)
+        {
+            island.transform.Translate(Vector2.up * 0.0f, Space.World);
         }
 	}
-
-
 }
