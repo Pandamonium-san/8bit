@@ -40,9 +40,9 @@ public class CatAnimation : MonoBehaviour
 
   IEnumerator Sounds()
   {
-    m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/shorewaves1"));
+    m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/shorewaves1"), 0.3f);
     yield return new WaitForSeconds(6.0f);
-    m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/splash1"));
+    m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/splash1"), 0.1f);
     yield return new WaitForSeconds(1.5f);
     m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/unplug1"));
   }
