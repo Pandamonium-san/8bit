@@ -26,7 +26,7 @@ public class StartMenu : MonoBehaviour
     {
         //if (Input.GetKeyDown(KeyCode.F1))
         //{
-            SceneManager.LoadScene("level1");       
+            SceneManager.LoadScene("Intro");       
 
         //}
 
