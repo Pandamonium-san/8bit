@@ -52,14 +52,15 @@ public class Seagull : MonoBehaviour
     yield return new WaitForSeconds(0.3f);
     airstrike = true;
     float diff = pc.transform.position.x - transform.position.x;
+    float yVel = transform.position.y > 0 ? 6 : -6;
     if (diff > 0)
     {
-      velocity = new Vector3(10, 6);
+      velocity = new Vector3(10, yVel);
       transform.localScale = new Vector3(-1.0f, transform.localScale.y);
     }
     else
     {
-      velocity = new Vector3(-10, 6);
+      velocity = new Vector3(-10, yVel);
       transform.localScale = new Vector3(1.0f, transform.localScale.y);
     }
     yield return new WaitForSeconds(1.0f);
