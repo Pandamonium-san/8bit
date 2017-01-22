@@ -41,6 +41,7 @@ public class Seagull : MonoBehaviour
     PlayerCharacter pc = collision.gameObject.GetComponent<PlayerCharacter>();
     if(pc != null)
     {
+      pc.m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/seagull1"));
       StartCoroutine(ExecuteMission(pc));
     }
   }
@@ -61,5 +62,7 @@ public class Seagull : MonoBehaviour
       velocity = new Vector3(-10, 6);
       transform.localScale = new Vector3(1.0f, transform.localScale.y);
     }
+    yield return new WaitForSeconds(1.0f);
+    pc.m_AudioSource.PlayOneShot((AudioClip)Resources.Load("Audio/sfx/seagull2"));
   }
 }
