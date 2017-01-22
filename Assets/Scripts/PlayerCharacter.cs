@@ -162,10 +162,10 @@ public class PlayerCharacter : MonoBehaviour
         // be scared
         m_JumpForce = 1120; //m_DefaultJumpForce * 1.2f;
         m_MaxSpeed = 10; // m_DefaultMaxSpeed * 1.5f;
-        StartCoroutine(Zoom(15));
+        StartCoroutine(Zoom(16));
         break;
       case StateOfEmotion.Angry:
-        StartCoroutine(Zoom(7));
+        StartCoroutine(Zoom(8));
         // ponch ur fokin f8ce m8
         break;
       default:

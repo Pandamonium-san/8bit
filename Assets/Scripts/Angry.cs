@@ -3,31 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Angry : MonoBehaviour {
+public class Angry : MonoBehaviour
+{
+  [SerializeField]
+  PlayerCharacter pc;
 
-    public Image angry;
-    public Image scarred;
+  public Image angry;
+  public Image scarred;
 
-	// Use this for initialization
-	void Start () {
-        angry = angry.GetComponent<Image>();
-        scarred = scarred.GetComponent<Image>();
-        angry.enabled = false;
-        scarred.enabled = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+  // Use this for initialization
+  void Start()
+  {
+    pc = FindObjectOfType<PlayerCharacter>();
+    angry.enabled = true;
+    scarred.enabled = true;
+    scarred.color = Color.white * 0;
+    angry.color = Color.white * 0;
+  }
 
-    public void OnTriggerEnter2D(Collider2D collision)
-    {        
-
-        if (collision.gameObject.tag == "Player")
-        {
-            angry.enabled = true;
-            scarred.enabled = false;
-        }
+  // Update is called once per frame
+  void Update()
+  {
+    if (pc.GetEmotionalState() == PlayerCharacter.StateOfEmotion.Angry)
+    {
+      angry.color = Color.white * (1 - pc.Health / 100);
+      scarred.color = Color.white * 0;
     }
+    else if (pc.GetEmotionalState() == PlayerCharacter.StateOfEmotion.Scared)
+    {
+      scarred.color = Color.white * (1 - pc.Health / 100);
+      angry.color = Color.white * 0;
+    }
+    else
+    {
+      angry.color = Color.white * 0;
+      scarred.color = Color.white * 0;
+    }
+  }
 }
