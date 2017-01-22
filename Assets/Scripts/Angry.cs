@@ -26,12 +26,12 @@ public class Angry : MonoBehaviour
   {
     if (pc.GetEmotionalState() == PlayerCharacter.StateOfEmotion.Angry)
     {
-      angry.color = Color.white * (1 - pc.Health / 100);
+      angry.color = Color.white * (1.0f - (pc.Health / 100) * 0.5f);
       scarred.color = Color.white * 0;
     }
     else if (pc.GetEmotionalState() == PlayerCharacter.StateOfEmotion.Scared)
     {
-      scarred.color = Color.white * (1 - pc.Health / 100);
+      scarred.color = Color.white * (0.75f - (pc.Health / 100) * 0.5f);
       angry.color = Color.white * 0;
     }
     else

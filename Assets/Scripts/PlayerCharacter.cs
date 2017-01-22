@@ -165,7 +165,7 @@ public class PlayerCharacter : MonoBehaviour
         StartCoroutine(Zoom(16));
         break;
       case StateOfEmotion.Angry:
-        StartCoroutine(Zoom(8));
+        StartCoroutine(Zoom(10));
         // ponch ur fokin f8ce m8
         break;
       default:
